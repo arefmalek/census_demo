@@ -4,38 +4,31 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 
-"""
-# My first app
-Here's our first attempt at using data to create a table:
-"""
+race_composite = pd.read_csv("data/race.csv")
+age_composite = pd.read_csv("data/age.csv")
+sex_composite = pd.read_csv("data/sex.csv")
 
-df = pd.DataFrame({
-  'first column': [1, 2, 3, 4],
-  'second column': [10, 20, 30, 40]
-})
+st.title("Why its F the Electoral College")
 
-df
+year = st.sidebar.select_slider( 
+        "Select the Year",
+        [*range(2010, 2020)],
+)
 
-st.write("selectbox")
-option = st.sidebar.selectbox(
-    'Which number do you like best?',
-     df['first column'])
+st.write("Year: ", year)
 
-'You selected:', option
+race = pd.DataFrame(race_composite[str(year)])
+race.index = race_composite["Label"]
 
-st.write("line chart")
-chart_data = pd.DataFrame(
-     np.random.randn(20, 3),
-     columns=['a', 'b', 'c'])
+age = pd.DataFrame(age_composite[str(year)])
+age.index = age_composite["Label"]
 
-st.line_chart(chart_data)
+sex = pd.DataFrame(sex_composite[str(year)])
+sex.index = sex_composite["Label"]
 
 
-st.write("plotting a map")
-map_data = pd.DataFrame(
-    np.random.randn(1000, 2) / [50, 50] + [37.76, -122.4],
-    columns=['lat', 'lon'])
+st.bar_chart(race)
 
-st.map(map_data)
+st.bar_chart(age)
 
-
+st.bar_chart(sex)
